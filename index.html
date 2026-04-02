@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mehul · Resume Tailor</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --or:#FF5C00;--or2:#FF7A30;--or-bg:rgba(255,92,0,0.08);--or-border:rgba(255,92,0,0.35);
+  --bg:#0C0C0C;--s1:#141414;--s2:#1C1C1C;--s3:#242424;--s4:#2E2E2E;
+  --b:rgba(255,255,255,0.07);--b2:rgba(255,255,255,0.12);
+  --t:#EDEAE5;--tm:#888880;--td:#444440;
+  --green:#4CAF50;--red:#E24B4A;--blue:#4A9EFF;
+  --mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;--display:'Bebas Neue',sans-serif;
+  --r:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--t);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh;}
+
+nav{position:sticky;top:0;z-index:200;height:52px;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;background:rgba(12,12,12,0.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--b);}
+.nav-logo{font-family:var(--display);font-size:20px;letter-spacing:2px;}
+.nav-logo em{color:var(--or);font-style:normal;}
+.nav-tag{font-size:10px;font-family:var(--mono);padding:3px 8px;border-radius:3px;border:1px solid var(--or-border);color:var(--or);background:var(--or-bg);}
+
+.app{display:grid;grid-template-columns:236px 1fr 300px;height:calc(100vh - 52px);overflow:hidden;}
+
+/* LEFT */
+.left-bar{border-right:1px solid var(--b);overflow-y:auto;padding:1.25rem 1rem;display:flex;flex-direction:column;gap:1rem;scrollbar-width:thin;scrollbar-color:var(--s3) transparent;}
+.sb-label{font-size:9px;font-family:var(--mono);letter-spacing:2.5px;text-transform:uppercase;color:var(--td);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.sb-label::after{content:'';flex:1;height:1px;background:var(--b);}
+.profile-name{font-family:var(--display);font-size:24px;letter-spacing:1px;}
+.profile-sub{font-size:11px;font-family:var(--mono);color:var(--tm);margin-top:2px;}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;}
+.stat-box{background:var(--s2);border:1px solid var(--b);border-radius:5px;padding:8px 10px;}
+.stat-val{font-family:var(--display);font-size:18px;color:var(--or);}
+.stat-lbl{font-size:9px;font-family:var(--mono);color:var(--td);}
+.tags{display:flex;flex-wrap:wrap;gap:4px;}
+.tag{font-size:9px;font-family:var(--mono);padding:3px 7px;border-radius:3px;border:1px solid var(--b);color:var(--td);background:var(--s2);}
+.tag.hi{color:var(--or);border-color:var(--or-border);background:var(--or-bg);}
+.tag.bl{color:var(--blue);border-color:rgba(74,158,255,0.3);background:rgba(74,158,255,0.06);}
+.exp-item{padding:8px 10px;background:var(--s2);border:1px solid var(--b);border-radius:5px;margin-bottom:6px;}
+.exp-role{font-size:11px;font-weight:600;color:var(--t);}
+.exp-co{font-size:10px;font-family:var(--mono);color:var(--or);}
+.exp-dates{font-size:9px;font-family:var(--mono);color:var(--td);margin-top:2px;}
+.key-row{display:flex;gap:6px;}
+.key-input{flex:1;background:var(--s2);border:1px solid var(--b);border-radius:5px;color:var(--t);font-family:var(--mono);font-size:11px;padding:7px 10px;outline:none;transition:border-color 0.15s;}
+.key-input:focus{border-color:var(--or-border);}
+.key-input::placeholder{color:var(--td);}
+.key-btn{padding:7px 10px;background:var(--s3);border:1px solid var(--b);border-radius:5px;color:var(--tm);font-size:10px;font-family:var(--mono);cursor:pointer;transition:all 0.15s;}
+.key-btn:hover{border-color:var(--or-border);color:var(--or);}
+.key-status{font-size:10px;font-family:var(--mono);color:var(--td);margin-top:4px;}
+.key-status.ok{color:var(--green);}
+
+/* CENTER */
+.center{display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--b);}
+.chat-history{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1.5rem;scrollbar-width:thin;scrollbar-color:var(--s3) transparent;}
+.msg{display:flex;gap:10px;}
+.msg.user{flex-direction:row-reverse;}
+.avatar{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:var(--mono);font-weight:500;}
+.msg.assistant .avatar{background:var(--or-bg);border:1px solid var(--or-border);color:var(--or);}
+.msg.user .avatar{background:var(--s3);border:1px solid var(--b2);color:var(--tm);}
+.msg-body{max-width:calc(100% - 44px);}
+.msg-from{font-size:10px;font-family:var(--mono);color:var(--td);margin-bottom:4px;}
+.msg.user .msg-from{text-align:right;}
+.bubble{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;}
+.msg.assistant .bubble{background:var(--s1);border:1px solid var(--b);border-radius:2px 10px 10px 10px;}
+.msg.user .bubble{background:var(--or);color:#000;border-radius:10px 2px 10px 10px;font-weight:500;}
+
+/* result card */
+.result-card{margin-top:10px;border:1px solid var(--b);border-radius:var(--r);overflow:hidden;}
+.tab-bar{display:flex;border-bottom:1px solid var(--b);background:var(--s2);overflow-x:auto;}
+.tab{padding:8px 12px;font-size:11px;font-family:var(--mono);cursor:pointer;color:var(--tm);border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap;flex-shrink:0;}
+.tab.on{color:var(--or);border-bottom-color:var(--or);}
+.pane{display:none;padding:14px;}
+.pane.on{display:block;}
+
+/* fit score */
+.score-ring{display:flex;flex-direction:column;align-items:center;padding:1.25rem 1rem;background:var(--s2);border-radius:var(--r);margin-bottom:12px;}
+.score-num{font-family:var(--display);font-size:52px;line-height:1;}
+.score-lbl{font-size:11px;font-family:var(--mono);color:var(--tm);margin-top:4px;}
+.score-bar-wrap{width:100%;height:5px;background:var(--s4);border-radius:3px;margin-top:10px;overflow:hidden;}
+.score-bar{height:100%;border-radius:3px;transition:width 1s ease;}
+.vpills{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+.vp{font-size:10px;font-family:var(--mono);padding:3px 8px;border-radius:12px;}
+.vp.s{background:rgba(76,175,80,0.12);border:1px solid rgba(76,175,80,0.3);color:var(--green);}
+.vp.w{background:rgba(226,75,74,0.1);border:1px solid rgba(226,75,74,0.3);color:var(--red);}
+.vp.n{background:var(--s3);border:1px solid var(--b);color:var(--tm);}
+
+/* changes */
+.ch-item{padding:10px 12px;border-radius:6px;background:var(--s2);border-left:3px solid var(--or);margin-bottom:8px;}
+.ch-item.med{border-left-color:#FFB347;}
+.ch-item.low{border-left-color:var(--s4);}
+.ch-kw{font-family:var(--mono);font-size:12px;color:var(--or);font-weight:500;}
+.ch-impact{font-size:9px;font-family:var(--mono);color:var(--td);margin-left:8px;text-transform:uppercase;}
+.ch-why{font-size:12px;color:var(--tm);margin-top:3px;}
+.ch-where{font-size:10px;font-family:var(--mono);color:var(--td);margin-top:2px;}
+
+/* outputs */
+.out-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.out-btn{padding:10px 16px;border-radius:var(--r);font-size:12px;font-family:var(--mono);cursor:pointer;transition:all 0.15s;border:1px solid var(--b2);display:flex;align-items:center;gap:8px;font-weight:500;}
+.out-btn.tex{background:var(--or);border-color:var(--or);color:#000;}
+.out-btn.tex:hover{background:var(--or2);}
+.out-btn.pdf{background:var(--s3);color:var(--t);}
+.out-btn.pdf:hover{border-color:var(--or-border);color:var(--or);}
+.out-btn.copy{background:transparent;color:var(--tm);}
+.out-btn.copy:hover{border-color:var(--or-border);color:var(--or);}
+.latex-out{background:var(--bg);border:1px solid var(--b);border-radius:6px;font-family:var(--mono);font-size:11px;line-height:1.6;padding:12px;color:#9ABBD6;white-space:pre-wrap;word-break:break-all;max-height:320px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--s3) transparent;}
+.cover-preview{background:var(--s1);border:1px solid var(--b);border-radius:6px;padding:16px;font-size:13px;line-height:1.8;color:var(--t);max-height:320px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--s3) transparent;white-space:pre-wrap;}
+
+/* typing */
+.typing{display:flex;gap:5px;align-items:center;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--or);animation:bob 1.2s ease-in-out infinite;}
+.typing span:nth-child(2){animation-delay:0.2s;}
+.typing span:nth-child(3){animation-delay:0.4s;}
+@keyframes bob{0%,60%,100%{transform:translateY(0);opacity:0.4}30%{transform:translateY(-5px);opacity:1}}
+
+/* welcome */
+.welcome{text-align:center;padding:2.5rem 1.5rem;display:flex;flex-direction:column;align-items:center;gap:1rem;}
+.welcome-title{font-family:var(--display);font-size:30px;letter-spacing:2px;}
+.welcome-title em{color:var(--or);font-style:normal;}
+.welcome-sub{font-size:13px;color:var(--tm);max-width:400px;line-height:1.7;}
+.steps{display:flex;flex-direction:column;gap:6px;text-align:left;width:100%;max-width:380px;}
+.step{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--s1);border:1px solid var(--b);border-radius:6px;font-size:12px;color:var(--tm);}
+.step-n{font-family:var(--display);font-size:18px;color:var(--or);line-height:1;flex-shrink:0;margin-top:1px;}
+
+/* input */
+.input-area{border-top:1px solid var(--b);padding:1rem 1.5rem;background:var(--s1);}
+.input-meta{display:flex;gap:8px;margin-bottom:8px;align-items:center;flex-wrap:wrap;}
+.input-hint{font-size:10px;font-family:var(--mono);}
+.input-row{display:flex;gap:8px;align-items:flex-end;}
+.chat-ta{flex:1;background:var(--s2);border:1px solid var(--b);border-radius:var(--r);color:var(--t);font-family:var(--sans);font-size:13px;padding:10px 14px;outline:none;resize:none;min-height:42px;max-height:140px;line-height:1.5;transition:border-color 0.15s;overflow-y:auto;}
+.chat-ta:focus{border-color:var(--or-border);}
+.chat-ta::placeholder{color:var(--td);}
+.send-btn{width:42px;height:42px;background:var(--or);border:none;border-radius:var(--r);color:#000;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;transition:all 0.15s;}
+.send-btn:hover{background:var(--or2);transform:scale(1.04);}
+.send-btn:active{transform:scale(0.97);}
+.send-btn:disabled{background:var(--s3);color:var(--td);cursor:not-allowed;transform:none;}
+
+/* RIGHT */
+.right-bar{overflow-y:auto;padding:1.25rem 1rem;display:flex;flex-direction:column;gap:1.25rem;scrollbar-width:thin;scrollbar-color:var(--s3) transparent;}
+.rp-hdr{font-size:9px;font-family:var(--mono);letter-spacing:2px;text-transform:uppercase;color:var(--td);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.rp-hdr::after{content:'';flex:1;height:1px;background:var(--b);}
+
+/* file slots */
+.file-slot{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--s2);border:1px solid var(--b);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden;}
+.file-slot:hover{border-color:var(--or-border);}
+.file-slot.loaded{border-color:var(--or-border);background:var(--or-bg);}
+.file-slot input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;}
+.slot-icon{font-family:var(--display);font-size:13px;color:var(--or);flex-shrink:0;width:32px;text-align:center;}
+.slot-info{flex:1;min-width:0;}
+.slot-name{font-size:11px;font-weight:500;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.slot-sub{font-size:9px;font-family:var(--mono);color:var(--td);margin-top:1px;}
+.slot-status{font-size:9px;font-family:var(--mono);flex-shrink:0;}
+.slot-status.ok{color:var(--green);}
+.slot-status.missing{color:var(--td);}
+.slot-clear{width:18px;height:18px;border-radius:50%;background:var(--s4);border:none;color:var(--tm);font-size:10px;cursor:pointer;display:none;align-items:center;justify-content:center;flex-shrink:0;z-index:2;}
+.file-slot.loaded .slot-clear{display:flex;}
+.file-slot.loaded .slot-status{display:none;}
+.files-ready{font-size:10px;font-family:var(--mono);text-align:center;padding:6px;border-radius:5px;margin-top:4px;}
+.files-ready.all{background:rgba(76,175,80,0.08);border:1px solid rgba(76,175,80,0.2);color:var(--green);}
+.files-ready.partial{background:var(--or-bg);border:1px solid var(--or-border);color:var(--or);}
+
+.setting-row{margin-bottom:10px;}
+.setting-row label{font-size:10px;font-family:var(--mono);color:var(--td);display:block;margin-bottom:4px;}
+.setting-row select{width:100%;background:var(--s2);border:1px solid var(--b);border-radius:5px;color:var(--t);font-family:var(--mono);font-size:11px;padding:7px 10px;outline:none;cursor:pointer;}
+.setting-row select:focus{border-color:var(--or-border);}
+
+.hist-item{padding:8px 10px;background:var(--s2);border:1px solid var(--b);border-radius:5px;cursor:pointer;transition:all 0.15s;margin-bottom:6px;}
+.hist-item:hover{border-color:var(--or-border);background:var(--or-bg);}
+.hi-co{font-size:12px;color:var(--t);font-weight:500;}
+.hi-role{font-size:10px;font-family:var(--mono);color:var(--tm);}
+.hi-score{font-size:10px;font-family:var(--mono);color:var(--or);}
+.hi-date{font-size:9px;font-family:var(--mono);color:var(--td);margin-top:3px;}
+.hist-empty{font-size:11px;font-family:var(--mono);color:var(--td);text-align:center;padding:1rem;}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--s3);border-radius:2px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><em>M</em> · RESUME TAILOR</div>
+  <span class="nav-tag">KEYWORDS ONLY · CLAUDE SONNET</span>
+</nav>
+
+<div class="app">
+
+  <!-- LEFT -->
+  <aside class="left-bar">
+    <div>
+      <div class="sb-label">Profile</div>
+      <div class="profile-name">Mehul Goel</div>
+      <div class="profile-sub">MS Data Science · NYU CDS</div>
+      <div class="profile-sub" style="color:var(--td);font-size:10px;">May 2027 · GPA 3.67</div>
+      <div class="profile-sub" style="color:var(--td);font-size:10px;margin-top:1px;">BSc IT · UMich · GPA 3.89</div>
+      <div class="stats-grid">
+        <div class="stat-box"><div class="stat-val">2.5y</div><div class="stat-lbl">Industry</div></div>
+        <div class="stat-box"><div class="stat-val">S26</div><div class="stat-lbl">Target</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="sb-label">Target Roles</div>
+      <div class="tags">
+        <span class="tag hi">AI Engineer</span><span class="tag hi">ML Engineer</span>
+        <span class="tag hi">Data Scientist</span><span class="tag">ML Research</span>
+      </div>
+    </div>
+    <div>
+      <div class="sb-label">Experience</div>
+      <div class="exp-item">
+        <div class="exp-role">ML Support Engineer</div>
+        <div class="exp-co">LTI Mindtree · Microsoft</div>
+        <div class="exp-dates">Aug 2022 – Feb 2025</div>
+      </div>
+      <div class="exp-item">
+        <div class="exp-role">Data Scientist</div>
+        <div class="exp-co">DevelopMetrics</div>
+        <div class="exp-dates">Aug 2021 – Apr 2022</div>
+      </div>
+    </div>
+    <div>
+      <div class="sb-label">Core Stack</div>
+      <div class="tags">
+        <span class="tag hi">LangGraph</span><span class="tag hi">PyTorch</span>
+        <span class="tag hi">RAG</span><span class="tag hi">Hugging Face</span>
+        <span class="tag">FAISS</span><span class="tag">ChromaDB</span>
+        <span class="tag">BM25</span><span class="tag">FastAPI</span>
+        <span class="tag">Azure OpenAI</span><span class="tag">Vertex AI</span>
+        <span class="tag">DuckDB</span><span class="tag">MLflow</span>
+        <span class="tag">PySpark</span><span class="tag">XGBoost</span>
+      </div>
+    </div>
+    <div>
+      <div class="sb-label">API Key</div>
+      <div class="key-row">
+        <input type="password" id="apiKey" class="key-input" placeholder="sk-ant-api03-…"/>
+        <button class="key-btn" onclick="saveKey()">Save</button>
+      </div>
+      <div class="key-status" id="keyStatus">Not saved</div>
+    </div>
+  </aside>
+
+  <!-- CENTER -->
+  <section class="center">
+    <div class="chat-history" id="chatHistory">
+      <div class="welcome" id="welcomeEl">
+        <div class="welcome-title">RESUME <em>TAILOR</em></div>
+        <div class="welcome-sub">Keywords-only ATS optimizer. Loads your resume + 4 project READMEs before every call. Outputs a tailored .tex resume and a PDF cover letter.</div>
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div><div>Save your Anthropic API key in the sidebar</div></div>
+          <div class="step"><div class="step-n">2</div><div>Upload your resume .tex and all 4 project READMEs in the right panel — done once, remembered forever</div></div>
+          <div class="step"><div class="step-n">3</div><div>Paste a job description and hit send</div></div>
+          <div class="step"><div class="step-n">4</div><div>Download your tailored .tex resume + PDF cover letter</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="input-area">
+      <div class="input-meta">
+        <span class="input-hint" id="filesHint" style="color:var(--td);">Files not loaded</span>
+        <span class="input-hint" style="color:var(--td);">· Shift+Enter for newline</span>
+      </div>
+      <div class="input-row">
+        <textarea id="chatInput" class="chat-ta" placeholder="Paste the full job description here and press send…" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">↑</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RIGHT -->
+  <aside class="right-bar">
+
+    <!-- FILE SLOTS -->
+    <div>
+      <div class="rp-hdr">Required Files</div>
+
+      <!-- Resume -->
+      <div class="file-slot" id="slot_resume" onclick="triggerSlot('resume')">
+        <input type="file" id="input_resume" accept=".tex,.txt" onchange="loadFile('resume',this)" onclick="event.stopPropagation()">
+        <div class="slot-icon">TEX</div>
+        <div class="slot-info">
+          <div class="slot-name">Resume (.tex)</div>
+          <div class="slot-sub">Your LaTeX resume source</div>
+        </div>
+        <span class="slot-status missing" id="status_resume">Upload</span>
+        <button class="slot-clear" onclick="clearSlot(event,'resume')">✕</button>
+      </div>
+
+      <!-- 4 READMEs -->
+      <div class="file-slot" id="slot_readme1" onclick="triggerSlot('readme1')">
+        <input type="file" id="input_readme1" accept=".md,.txt" onchange="loadFile('readme1',this)" onclick="event.stopPropagation()">
+        <div class="slot-icon">MD</div>
+        <div class="slot-info">
+          <div class="slot-name" id="name_readme1">Multi-Agent RAG README</div>
+          <div class="slot-sub">Project README file</div>
+        </div>
+        <span class="slot-status missing" id="status_readme1">Upload</span>
+        <button class="slot-clear" onclick="clearSlot(event,'readme1')">✕</button>
+      </div>
+
+      <div class="file-slot" id="slot_readme2" onclick="triggerSlot('readme2')">
+        <input type="file" id="input_readme2" accept=".md,.txt" onchange="loadFile('readme2',this)" onclick="event.stopPropagation()">
+        <div class="slot-icon">MD</div>
+        <div class="slot-info">
+          <div class="slot-name" id="name_readme2">RetailRL README</div>
+          <div class="slot-sub">Project README file</div>
+        </div>
+        <span class="slot-status missing" id="status_readme2">Upload</span>
+        <button class="slot-clear" onclick="clearSlot(event,'readme2')">✕</button>
+      </div>
+
+      <div class="file-slot" id="slot_readme3" onclick="triggerSlot('readme3')">
+        <input type="file" id="input_readme3" accept=".md,.txt" onchange="loadFile('readme3',this)" onclick="event.stopPropagation()">
+        <div class="slot-icon">MD</div>
+        <div class="slot-info">
+          <div class="slot-name" id="name_readme3">FinSignal README</div>
+          <div class="slot-sub">Project README file</div>
+        </div>
+        <span class="slot-status missing" id="status_readme3">Upload</span>
+        <button class="slot-clear" onclick="clearSlot(event,'readme3')">✕</button>
+      </div>
+
+      <div class="file-slot" id="slot_readme4" onclick="triggerSlot('readme4')">
+        <input type="file" id="input_readme4" accept=".md,.txt" onchange="loadFile('readme4',this)" onclick="event.stopPropagation()">
+        <div class="slot-icon">MD</div>
+        <div class="slot-info">
+          <div class="slot-name" id="name_readme4">Robust RAG README</div>
+          <div class="slot-sub">Project README file</div>
+        </div>
+        <span class="slot-status missing" id="status_readme4">Upload</span>
+        <button class="slot-clear" onclick="clearSlot(event,'readme4')">✕</button>
+      </div>
+
+      <div class="files-ready partial" id="filesReady">0 / 5 files loaded</div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div>
+      <div class="rp-hdr">Settings</div>
+      <div class="setting-row">
+        <label>Role Focus</label>
+        <select id="settingFocus">
+          <option value="auto" selected>Auto-detect from JD</option>
+          <option value="ai">AI / LLM Engineering</option>
+          <option value="ml">ML Engineering</option>
+          <option value="ds">Data Science</option>
+          <option value="swe">Software Engineering</option>
+          <option value="research">ML Research</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <label>Cover Letter Tone</label>
+        <select id="settingTone">
+          <option value="professional" selected>Professional & concise</option>
+          <option value="enthusiastic">Enthusiastic & personal</option>
+          <option value="technical">Technical & detailed</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- HISTORY -->
+    <div>
+      <div class="rp-hdr">Run History</div>
+      <div id="historyList"><div class="hist-empty">No runs yet</div></div>
+    </div>
+
+  </aside>
+</div>
+
+<script>
+// ---- State ----
+const FILES = { resume: null, readme1: null, readme2: null, readme3: null, readme4: null };
+const FILE_NAMES = { resume: null, readme1: null, readme2: null, readme3: null, readme4: null };
+let runHistory = [];
+let busy = false;
+let resultStore = {};
+
+// ---- Mehul's verified background ----
+const MEHUL_BG = `
+MEHUL GOEL — VERIFIED BACKGROUND
+
+EDUCATION:
+- MS Data Science, NYU Center for Data Science, GPA 3.67, graduating May 2027
+  Coursework: Machine Learning, Reinforcement Learning, Big Data
+- BS Information Technology, University of Michigan Ann Arbor, GPA 3.89, graduated Apr 2022
+  TA for SI618: Data Manipulation and Analysis (Winter 2022), 60 students
+
+EXPERIENCE:
+1. ML Support Engineer — Azure Data and AI | LTI Mindtree (Client: Microsoft) | Aug 2022–Feb 2025 | Washington DC
+   - Supported 300+ enterprise clients (Fortune 500, Premier-tier) on Azure AI deployments
+   - Technical escalation: Azure OpenAI, Speech, Vision, Form Recognizer, Face, Custom Classifiers
+   - Fine-tuned and deployed custom AI models across Azure AI Foundry (formerly Cognitive Services)
+   - End-to-end delivery from requirements through production validation
+   - Reported bugs to Microsoft engineering; authored best practice guides adopted org-wide
+
+2. Data Scientist | DevelopMetrics | Aug 2021–Apr 2022 | Ann Arbor MI
+   - Built BERT, ELECTRA, spaCy NLP classifiers; ~85% accuracy, strong F1; delivered 1 week early
+
+SKILLS:
+Languages: Python, SQL, R
+AI/LLMs: LangGraph, LangChain, Hugging Face Transformers, RAG Pipelines, Azure OpenAI, Azure AI Foundry
+ML: PyTorch, TensorFlow, scikit-learn, XGBoost, LightGBM, BERT, ELECTRA, spaCy, DeBERTa, SentenceTransformers, Llama 3.1
+Vector/Retrieval: ChromaDB, FAISS, BM25, Reciprocal Rank Fusion
+Backend/Infra: FastAPI, WebSockets, Docker, Git, Azure ML, React/Vite
+MLOps/Cloud: MLflow, PySpark, AWS (S3, SageMaker), GCP (Vertex AI)
+Data: DuckDB, pandas, NumPy, Optuna, SHAP, GARCH, Streamlit
+`;
+
+// ---- Init ----
+window.addEventListener('load', () => {
+  const k = localStorage.getItem('mehul_key');
+  if (k) { document.getElementById('apiKey').value = k; setKeyStatus(true); }
+  // Restore files from localStorage
+  ['resume','readme1','readme2','readme3','readme4'].forEach(slot => {
+    const content = localStorage.getItem('mehul_file_'+slot);
+    const fname = localStorage.getItem('mehul_fname_'+slot);
+    if (content && fname) {
+      FILES[slot] = content;
+      FILE_NAMES[slot] = fname;
+      markSlotLoaded(slot, fname);
+    }
+  });
+  updateFilesStatus();
+  const h = localStorage.getItem('mehul_history');
+  if (h) { try { runHistory = JSON.parse(h); renderHistory(); } catch(e){} }
+});
+
+// ---- API Key ----
+function saveKey() {
+  const k = document.getElementById('apiKey').value.trim();
+  if (!k) return;
+  localStorage.setItem('mehul_key', k);
+  setKeyStatus(true);
+}
+function setKeyStatus(ok) {
+  const el = document.getElementById('keyStatus');
+  el.textContent = ok ? '✓ Saved in browser' : 'Not saved';
+  el.className = 'key-status'+(ok?' ok':'');
+}
+
+// ---- File Slots ----
+function triggerSlot(slot) {
+  document.getElementById('input_'+slot).click();
+}
+function loadFile(slot, input) {
+  const f = input.files[0]; if (!f) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    FILES[slot] = ev.target.result;
+    FILE_NAMES[slot] = f.name;
+    localStorage.setItem('mehul_file_'+slot, ev.target.result);
+    localStorage.setItem('mehul_fname_'+slot, f.name);
+    markSlotLoaded(slot, f.name);
+    updateFilesStatus();
+  };
+  reader.readAsText(f);
+}
+function markSlotLoaded(slot, fname) {
+  const el = document.getElementById('slot_'+slot);
+  el.classList.add('loaded');
+  const nameEl = document.getElementById('name_'+slot);
+  if (nameEl) nameEl.textContent = fname;
+  const statusEl = document.getElementById('status_'+slot);
+  if (statusEl) { statusEl.textContent = '✓'; statusEl.className = 'slot-status ok'; }
+}
+function clearSlot(e, slot) {
+  e.stopPropagation();
+  FILES[slot] = null; FILE_NAMES[slot] = null;
+  localStorage.removeItem('mehul_file_'+slot);
+  localStorage.removeItem('mehul_fname_'+slot);
+  const el = document.getElementById('slot_'+slot);
+  el.classList.remove('loaded');
+  const statusEl = document.getElementById('status_'+slot);
+  if (statusEl) { statusEl.textContent = 'Upload'; statusEl.className = 'slot-status missing'; statusEl.style.display = ''; }
+  // Reset name for readmes
+  const defaults = { readme1:'Multi-Agent RAG README', readme2:'RetailRL README', readme3:'FinSignal README', readme4:'Robust RAG README' };
+  const nameEl = document.getElementById('name_'+slot);
+  if (nameEl && defaults[slot]) nameEl.textContent = defaults[slot];
+  updateFilesStatus();
+}
+function updateFilesStatus() {
+  const loaded = Object.values(FILES).filter(Boolean).length;
+  const el = document.getElementById('filesReady');
+  const hint = document.getElementById('filesHint');
+  el.textContent = loaded + ' / 5 files loaded';
+  el.className = 'files-ready ' + (loaded === 5 ? 'all' : 'partial');
+  if (loaded === 5) {
+    hint.textContent = '✓ All 5 files ready';
+    hint.style.color = 'var(--green)';
+  } else {
+    hint.textContent = loaded + '/5 files loaded';
+    hint.style.color = loaded > 0 ? 'var(--or)' : 'var(--td)';
+  }
+}
+
+// ---- Chat ----
+function handleKey(e) { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();} }
+function autoResize(el) { el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,140)+'px'; }
+
+async function sendMessage() {
+  if (busy) return;
+  const input = document.getElementById('chatInput');
+  const jd = input.value.trim();
+  if (!jd) return;
+  const apiKey = document.getElementById('apiKey').value.trim() || localStorage.getItem('mehul_key');
+  if (!apiKey) { addError('Please save your Anthropic API key in the left sidebar.'); return; }
+  if (!FILES.resume) { addError('Please upload your resume .tex file in the right panel.'); return; }
+  const missingReadmes = ['readme1','readme2','readme3','readme4'].filter(k=>!FILES[k]);
+  if (missingReadmes.length > 0) {
+    addError(`Please upload all 4 project READMEs. Missing: ${missingReadmes.map(k=>FILE_NAMES[k]||k).join(', ')}`);
+    return;
+  }
+
+  document.getElementById('welcomeEl')?.remove();
+  addUserMsg(jd);
+  input.value=''; input.style.height='auto';
+  busy=true; document.getElementById('sendBtn').disabled=true;
+
+  const tid = addTyping();
+  try {
+    const result = await callClaude(apiKey, jd);
+    removeEl(tid);
+    addResultMsg(result);
+    pushHistory(result, jd);
+  } catch(err) {
+    removeEl(tid);
+    addError('Error: '+err.message);
+  }
+  busy=false; document.getElementById('sendBtn').disabled=false;
+}
+
+// ---- Claude API ----
+async function callClaude(apiKey, jd) {
+  const focus = document.getElementById('settingFocus').value;
+  const tone = document.getElementById('settingTone').value;
+
+  const system = `You are an expert ATS resume optimizer and cover letter writer. You work exclusively for Mehul Goel.
+
+${MEHUL_BG}
+
+PROJECT README FILES (Mehul's actual project documentation — use these as ground truth for what he built):
+
+=== RESUME ===
+${truncate(FILES.resume,3000)}
+
+=== PROJECT README 1: ${FILE_NAMES.readme1} ===
+${truncate(FILES.readme1,2500)}
+
+=== PROJECT README 2: ${FILE_NAMES.readme2} ===
+${truncate(FILES.readme2,2500)}
+
+=== PROJECT README 3: ${FILE_NAMES.readme3} ===
+${truncate(FILES.readme3,2500)}
+
+=== PROJECT README 4: ${FILE_NAMES.readme4} ===
+${truncate(FILES.readme4,2500)}
+
+YOUR TASK:
+1. Analyze the job description for ATS keywords, required skills, and preferred terminology
+2. Produce a keyword-optimized LaTeX resume
+3. Write a tailored cover letter
+
+RESUME TAILORING RULES — STRICTLY FOLLOW:
+- KEYWORDS ONLY MODE: You may ONLY substitute or add individual keywords/technology names/tool names within existing sentences
+- DO NOT rewrite, restructure, or rephrase any sentence or bullet point
+- DO NOT add new bullet points or remove existing ones
+- DO NOT change the order of sections or bullets
+- Only add a keyword if Mehul would OBVIOUSLY have worked with it based on his README files and background
+- Never fabricate tools, skills, or experience
+- Keep ALL LaTeX formatting exactly intact
+- Example of allowed change: "Built a RAG pipeline using FAISS" → "Built a RAG pipeline using FAISS and vector similarity search"
+- Example of NOT allowed: rewriting a whole bullet to sound more impressive
+
+ROLE FOCUS: ${focus === 'auto' ? 'Auto-detect from JD' : focus}
+
+COVER LETTER RULES:
+- Tone: ${tone}
+- 3 paragraphs: (1) why this role/company specifically, (2) most relevant experience + project, (3) closing
+- Reference specific details from the JD
+- Keep it under 300 words
+- Do not use hollow phrases like "I am passionate about" or "I would be a great fit"
+- Ground every claim in something Mehul actually did
+
+RESPOND WITH ONLY VALID JSON — no markdown, no preamble:
+{
+  "fitScore": <0-100>,
+  "fitVerdict": "<one honest sentence>",
+  "fitBreakdown": {
+    "strong": ["<genuine strength>"],
+    "gaps": ["<real gap>"],
+    "neutral": ["<present but not highlighted>"]
+  },
+  "summary": "<2-3 sentences: which keywords were added, where, and why>",
+  "keywordChanges": [
+    {
+      "keyword": "<exact keyword added>",
+      "why": "<why this keyword matches the JD>",
+      "where": "<section + bullet>",
+      "impact": "high|medium|low"
+    }
+  ],
+  "tailoredLatex": "<complete tailored LaTeX — same structure, only keyword-level changes>",
+  "coverLetter": {
+    "hiringManager": "<extract from JD or use 'Hiring Manager'>",
+    "company": "<company name from JD>",
+    "role": "<exact role title from JD>",
+    "body": "<full cover letter text, 3 paragraphs, plain text no LaTeX>"
+  }
+}`;
+
+  const resp = await fetch('/api/claude', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01'},
+    // Truncate large files to keep payload under token limit
+    const truncate = (s, n) => s && s.length > n ? s.slice(0,n) + "\n...[truncated]" : s;
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:8000,
+      system,
+      messages:[{role:'user',content:`JOB DESCRIPTION:\n${jd}`}]
+    })
+  });
+
+  if (!resp.ok) {
+    const e = await resp.json().catch(()=>({}));
+    throw new Error(e.error?.message||`HTTP ${resp.status}`);
+  }
+  const data = await resp.json();
+  const text = data.content.map(b=>b.text||'').join('');
+  let parsed;
+  try {
+    const clean = text.replace(/^```json\s*/,'').replace(/\s*```$/,'').trim();
+    parsed = JSON.parse(clean);
+  } catch {
+    const m = text.match(/\{[\s\S]*\}/);
+    if (m) parsed = JSON.parse(m[0]);
+    else throw new Error('Could not parse response. Please try again.');
+  }
+  return parsed;
+}
+
+// ---- Render ----
+function addUserMsg(text) {
+  const ch = document.getElementById('chatHistory');
+  const d = document.createElement('div');
+  d.className='msg user';
+  d.innerHTML=`<div class="avatar">MG</div><div class="msg-body"><div class="msg-from">You</div><div class="bubble">${esc(text.length>400?text.slice(0,400)+'…':text)}</div></div>`;
+  ch.appendChild(d); scrollChat();
+}
+
+function addResultMsg(result) {
+  const ch = document.getElementById('chatHistory');
+  const d = document.createElement('div');
+  d.className='msg assistant';
+  const id='r'+Date.now();
+  resultStore[id] = result;
+
+  const score = Number(result.fitScore)||0;
+  const barColor = score>=75?'var(--green)':score>=50?'var(--or)':'var(--red)';
+  const strong = (result.fitBreakdown?.strong||[]).map(s=>`<span class="vp s">${esc(s)}</span>`).join('');
+  const gaps   = (result.fitBreakdown?.gaps||[]).map(s=>`<span class="vp w">${esc(s)}</span>`).join('');
+  const neutral= (result.fitBreakdown?.neutral||[]).map(s=>`<span class="vp n">${esc(s)}</span>`).join('');
+  const changes= (result.keywordChanges||[]).map(c=>{
+    const cls=c.impact==='high'?'':c.impact==='medium'?' med':' low';
+    return `<div class="ch-item${cls}"><div><span class="ch-kw">${esc(c.keyword)}</span><span class="ch-impact">${esc((c.impact||'').toUpperCase())}</span></div><div class="ch-why">${esc(c.why)}</div><div class="ch-where">↳ ${esc(c.where)}</div></div>`;
+  }).join('');
+  const latexPreview = (result.tailoredLatex||'').slice(0,2000)+(result.tailoredLatex?.length>2000?'\n\n… (use Download for full file)':'');
+  const cl = result.coverLetter||{};
+  const coverPreview = `Dear ${cl.hiringManager||'Hiring Manager'},\n\n${cl.body||''}`;
+
+  d.innerHTML=`
+    <div class="avatar">AI</div>
+    <div class="msg-body" style="flex:1;max-width:calc(100% - 44px);">
+      <div class="msg-from">Resume Tailor</div>
+      <div class="bubble" style="padding:0;overflow:hidden;">
+        <div style="padding:12px 14px 8px;font-size:13px;line-height:1.7;border-bottom:1px solid var(--b);">${esc(result.summary||'')}</div>
+        <div class="result-card" style="border:none;border-radius:0;">
+          <div class="tab-bar">
+            <button class="tab on" onclick="switchTab('${id}',0)">Fit Score</button>
+            <button class="tab" onclick="switchTab('${id}',1)">Keywords (${(result.keywordChanges||[]).length})</button>
+            <button class="tab" onclick="switchTab('${id}',2)">Resume .tex</button>
+            <button class="tab" onclick="switchTab('${id}',3)">Cover Letter</button>
+          </div>
+          <div class="pane on" id="${id}_0">
+            <div class="score-ring">
+              <div class="score-num" style="color:${barColor}">${score}</div>
+              <div class="score-lbl">ATS FIT SCORE / 100</div>
+              <div class="score-bar-wrap"><div class="score-bar" style="width:${score}%;background:${barColor}"></div></div>
+            </div>
+            <div style="font-size:12px;color:var(--tm);margin-bottom:8px;">${esc(result.fitVerdict||'')}</div>
+            <div class="vpills">${strong}${gaps}${neutral}</div>
+          </div>
+          <div class="pane" id="${id}_1">
+            ${changes||'<div style="color:var(--td);font-size:12px;">No keyword changes.</div>'}
+          </div>
+          <div class="pane" id="${id}_2">
+            <div class="out-btns">
+              <button class="out-btn tex" onclick="dlTex('${id}')">↓ Download .tex</button>
+              <button class="out-btn copy" id="copybtn_${id}" onclick="cpTex('${id}')">Copy</button>
+            </div>
+            <div class="latex-out">${esc(latexPreview)}</div>
+          </div>
+          <div class="pane" id="${id}_3">
+            <div class="out-btns">
+              <button class="out-btn pdf" onclick="dlPDF('${id}')">↓ Download PDF</button>
+              <button class="out-btn copy" id="copycl_${id}" onclick="cpCover('${id}')">Copy</button>
+            </div>
+            <div class="cover-preview">${esc(coverPreview)}</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  ch.appendChild(d); scrollChat();
+}
+
+function switchTab(id, idx) {
+  const pane0 = document.getElementById(id+'_0');
+  if (!pane0) return;
+  const card = pane0.closest('.result-card');
+  card.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('on',i===idx));
+  card.querySelectorAll('.pane').forEach((p,i)=>p.classList.toggle('on',i===idx));
+}
+
+function dlTex(id) {
+  const r = resultStore[id]; if(!r?.tailoredLatex) return;
+  const co = (r.coverLetter?.company||'job').replace(/\s+/g,'_').toLowerCase();
+  dl(r.tailoredLatex, `mehul_resume_${co}.tex`, 'text/plain');
+}
+function cpTex(id) {
+  const r = resultStore[id]; if(!r) return;
+  navigator.clipboard.writeText(r.tailoredLatex||'').then(()=>{
+    const b=document.getElementById('copybtn_'+id);
+    if(b){b.textContent='Copied!';setTimeout(()=>b.textContent='Copy',2000);}
+  });
+}
+function cpCover(id) {
+  const r = resultStore[id]; if(!r) return;
+  const cl = r.coverLetter||{};
+  const text = `Dear ${cl.hiringManager||'Hiring Manager'},\n\n${cl.body||''}`;
+  navigator.clipboard.writeText(text).then(()=>{
+    const b=document.getElementById('copycl_'+id);
+    if(b){b.textContent='Copied!';setTimeout(()=>b.textContent='Copy',2000);}
+  });
+}
+
+function dlPDF(id) {
+  const r = resultStore[id]; if (!r?.coverLetter) return;
+  const cl = r.coverLetter;
+  const today = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const co = (cl.company||'Company').replace(/\s+/g,'_').toLowerCase();
+
+  // Build a clean print-ready HTML page and use window.print to save as PDF
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;font-size:11pt;line-height:1.7;color:#1a1a1a;background:#fff;padding:0;}
+  .page{max-width:680px;margin:0 auto;padding:56px 56px;}
+  .header{margin-bottom:32px;}
+  .name{font-size:18pt;font-weight:600;letter-spacing:-0.5px;margin-bottom:4px;}
+  .contact{font-size:9pt;color:#555;margin-bottom:4px;}
+  .date{font-size:10pt;color:#333;margin-bottom:24px;}
+  .addr{margin-bottom:24px;font-size:10pt;line-height:1.6;}
+  .addr strong{display:block;font-weight:600;}
+  .salutation{margin-bottom:16px;font-size:10.5pt;}
+  .body-text{font-size:10.5pt;line-height:1.8;white-space:pre-wrap;margin-bottom:24px;}
+  .closing{font-size:10.5pt;margin-top:8px;}
+  .sig{margin-top:28px;font-weight:600;font-size:10.5pt;}
+  hr{border:none;border-top:1px solid #ddd;margin:24px 0;}
+  @media print{body{-webkit-print-color-adjust:exact;}}
+</style>
+</head><body>
+<div class="page">
+  <div class="header">
+    <div class="name">Mehul Goel</div>
+    <div class="contact">mg8958@nyu.edu &nbsp;·&nbsp; +1 (206) 489-8502 &nbsp;·&nbsp; New York City, NY &nbsp;·&nbsp; linkedin.com/in/mehulgoel &nbsp;·&nbsp; github.com/goel-mehul</div>
+  </div>
+  <hr>
+  <div class="date">${today}</div>
+  <div class="addr">
+    <strong>${esc2(cl.hiringManager||'Hiring Manager')}</strong>
+    ${esc2(cl.company||'')}${cl.role?`<br>${esc2(cl.role)}`:''}
+  </div>
+  <div class="salutation">Dear ${esc2(cl.hiringManager||'Hiring Manager')},</div>
+  <div class="body-text">${esc2(cl.body||'')}</div>
+  <div class="closing">Sincerely,</div>
+  <div class="sig">Mehul Goel</div>
+</div>
+<script>window.onload=()=>{window.print();}<\/script>
+</body></html>`;
+
+  const w = window.open('','_blank','width=800,height=900');
+  if (w) {
+    w.document.write(html);
+    w.document.title = `mehul_cover_${co}.pdf`;
+    w.document.close();
+  }
+}
+
+function dl(content, filename, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content],{type}));
+  a.download = filename; a.click();
+}
+
+function addTyping() {
+  const id='typing_'+Date.now();
+  const ch=document.getElementById('chatHistory');
+  const d=document.createElement('div');
+  d.className='msg assistant';d.id=id;
+  d.innerHTML=`<div class="avatar">AI</div><div class="msg-body"><div class="msg-from">Resume Tailor</div><div class="bubble" style="padding:4px 8px;"><div class="typing"><span></span><span></span><span></span></div></div></div>`;
+  ch.appendChild(d);scrollChat();return id;
+}
+function removeEl(id){document.getElementById(id)?.remove();}
+
+function addError(msg) {
+  document.getElementById('welcomeEl')?.remove();
+  const ch=document.getElementById('chatHistory');
+  const d=document.createElement('div');
+  d.className='msg assistant';
+  d.innerHTML=`<div class="avatar" style="background:rgba(226,75,74,0.1);border-color:rgba(226,75,74,0.3);color:var(--red);">!</div><div class="msg-body"><div class="msg-from">System</div><div class="bubble" style="border-color:rgba(226,75,74,0.3);color:var(--red);">${esc(msg)}</div></div>`;
+  ch.appendChild(d);scrollChat();
+}
+
+function pushHistory(result, jd) {
+  const cl = result.coverLetter||{};
+  runHistory.unshift({ id:Date.now(), date:new Date().toLocaleDateString(), score:result.fitScore, company:cl.company||extractCompany(jd), role:cl.role||extractRole(jd) });
+  if(runHistory.length>30) runHistory.pop();
+  localStorage.setItem('mehul_history',JSON.stringify(runHistory));
+  renderHistory();
+}
+function renderHistory() {
+  const el=document.getElementById('historyList');
+  if(!runHistory.length){el.innerHTML='<div class="hist-empty">No runs yet</div>';return;}
+  el.innerHTML=runHistory.map(h=>`
+    <div class="hist-item">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div><div class="hi-co">${esc(h.company||'Application')}</div><div class="hi-role">${esc(h.role||'')}</div></div>
+        <div class="hi-score">${h.score}/100</div>
+      </div>
+      <div class="hi-date">${h.date}</div>
+    </div>`).join('');
+}
+
+function extractCompany(jd){const m=jd.match(/(?:at|@|About\s+)([A-Z][A-Za-z0-9\s&]{1,25})(?:\s*[,.\n(]|$)/);return m?m[1].trim():'';}
+function extractRole(jd){const m=jd.match(/((?:Senior|Staff|Lead|Principal|Junior)?\s*(?:ML|AI|Data|Machine Learning|Software|Research)[A-Za-z\s]{2,25}(?:Engineer|Scientist|Analyst|Researcher|Developer))/i);return m?m[1].trim():'';}
+function scrollChat(){const c=document.getElementById('chatHistory');setTimeout(()=>c.scrollTop=c.scrollHeight,60);}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function esc2(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+</script>
+</body>
+</html>
