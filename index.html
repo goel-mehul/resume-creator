@@ -143,10 +143,10 @@ nav{position:sticky;top:0;z-index:200;height:52px;padding:0 1.5rem;display:flex;
 .rp-hdr::after{content:'';flex:1;height:1px;background:var(--b);}
 
 /* file slots */
-.file-slot{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--s2);border:1px solid var(--b);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden;}
-.file-slot:hover{border-color:var(--or-border);}
+.file-slot{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--s2);border:1px solid var(--b);border-radius:6px;margin-bottom:6px;transition:all 0.15s;}.file-slot.loaded{border-color:var(--or-border);background:var(--or-bg);}.slot-upload-btn{padding:4px 10px;background:var(--s3);border:1px solid var(--b2);border-radius:4px;color:var(--tm);font-size:10px;font-family:var(--mono);cursor:pointer;transition:all 0.15s;flex-shrink:0;}.slot-upload-btn:hover{border-color:var(--or-border);color:var(--or);}.file-slot.loaded .slot-upload-btn{display:none;}
+
 .file-slot.loaded{border-color:var(--or-border);background:var(--or-bg);}
-.file-slot input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;}
+
 .slot-icon{font-family:var(--display);font-size:13px;color:var(--or);flex-shrink:0;width:32px;text-align:center;}
 .slot-info{flex:1;min-width:0;}
 .slot-name{font-size:11px;font-weight:500;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -155,7 +155,7 @@ nav{position:sticky;top:0;z-index:200;height:52px;padding:0 1.5rem;display:flex;
 .slot-status.ok{color:var(--green);}
 .slot-status.missing{color:var(--td);}
 .slot-clear{width:18px;height:18px;border-radius:50%;background:var(--s4);border:none;color:var(--tm);font-size:10px;cursor:pointer;display:none;align-items:center;justify-content:center;flex-shrink:0;z-index:2;}
-.file-slot.loaded .slot-clear{display:flex;}
+
 .file-slot.loaded .slot-status{display:none;}
 .files-ready{font-size:10px;font-family:var(--mono);text-align:center;padding:6px;border-radius:5px;margin-top:4px;}
 .files-ready.all{background:rgba(76,175,80,0.08);border:1px solid rgba(76,175,80,0.2);color:var(--green);}
@@ -276,61 +276,61 @@ nav{position:sticky;top:0;z-index:200;height:52px;padding:0 1.5rem;display:flex;
     <div>
       <div class="rp-hdr">Required Files</div>
 
-      <!-- Resume -->
-      <div class="file-slot" id="slot_resume" onclick="triggerSlot('resume')">
-        <input type="file" id="input_resume" accept=".tex,.txt" onchange="loadFile('resume',this)" onclick="event.stopPropagation()">
+      <!-- Hidden file inputs — outside any clickable container -->
+      <input type="file" id="input_resume"  accept=".tex,.txt" style="display:none" onchange="loadFile('resume',this)">
+      <input type="file" id="input_readme1" accept=".md,.txt"  style="display:none" onchange="loadFile('readme1',this)">
+      <input type="file" id="input_readme2" accept=".md,.txt"  style="display:none" onchange="loadFile('readme2',this)">
+      <input type="file" id="input_readme3" accept=".md,.txt"  style="display:none" onchange="loadFile('readme3',this)">
+      <input type="file" id="input_readme4" accept=".md,.txt"  style="display:none" onchange="loadFile('readme4',this)">
+
+      <div class="file-slot" id="slot_resume">
         <div class="slot-icon">TEX</div>
         <div class="slot-info">
-          <div class="slot-name">Resume (.tex)</div>
+          <div class="slot-name" id="name_resume">Resume (.tex)</div>
           <div class="slot-sub">Your LaTeX resume source</div>
         </div>
-        <span class="slot-status missing" id="status_resume">Upload</span>
-        <button class="slot-clear" onclick="clearSlot(event,'resume')">✕</button>
+        <button class="slot-upload-btn" onclick="document.getElementById('input_resume').click()">Upload</button>
+        <button class="slot-clear" id="clear_resume" style="display:none" onclick="clearSlot('resume')">✕</button>
       </div>
 
-      <!-- 4 READMEs -->
-      <div class="file-slot" id="slot_readme1" onclick="triggerSlot('readme1')">
-        <input type="file" id="input_readme1" accept=".md,.txt" onchange="loadFile('readme1',this)" onclick="event.stopPropagation()">
+      <div class="file-slot" id="slot_readme1">
         <div class="slot-icon">MD</div>
         <div class="slot-info">
           <div class="slot-name" id="name_readme1">Multi-Agent RAG README</div>
           <div class="slot-sub">Project README file</div>
         </div>
-        <span class="slot-status missing" id="status_readme1">Upload</span>
-        <button class="slot-clear" onclick="clearSlot(event,'readme1')">✕</button>
+        <button class="slot-upload-btn" onclick="document.getElementById('input_readme1').click()">Upload</button>
+        <button class="slot-clear" id="clear_readme1" style="display:none" onclick="clearSlot('readme1')">✕</button>
       </div>
 
-      <div class="file-slot" id="slot_readme2" onclick="triggerSlot('readme2')">
-        <input type="file" id="input_readme2" accept=".md,.txt" onchange="loadFile('readme2',this)" onclick="event.stopPropagation()">
+      <div class="file-slot" id="slot_readme2">
         <div class="slot-icon">MD</div>
         <div class="slot-info">
           <div class="slot-name" id="name_readme2">RetailRL README</div>
           <div class="slot-sub">Project README file</div>
         </div>
-        <span class="slot-status missing" id="status_readme2">Upload</span>
-        <button class="slot-clear" onclick="clearSlot(event,'readme2')">✕</button>
+        <button class="slot-upload-btn" onclick="document.getElementById('input_readme2').click()">Upload</button>
+        <button class="slot-clear" id="clear_readme2" style="display:none" onclick="clearSlot('readme2')">✕</button>
       </div>
 
-      <div class="file-slot" id="slot_readme3" onclick="triggerSlot('readme3')">
-        <input type="file" id="input_readme3" accept=".md,.txt" onchange="loadFile('readme3',this)" onclick="event.stopPropagation()">
+      <div class="file-slot" id="slot_readme3">
         <div class="slot-icon">MD</div>
         <div class="slot-info">
           <div class="slot-name" id="name_readme3">FinSignal README</div>
           <div class="slot-sub">Project README file</div>
         </div>
-        <span class="slot-status missing" id="status_readme3">Upload</span>
-        <button class="slot-clear" onclick="clearSlot(event,'readme3')">✕</button>
+        <button class="slot-upload-btn" onclick="document.getElementById('input_readme3').click()">Upload</button>
+        <button class="slot-clear" id="clear_readme3" style="display:none" onclick="clearSlot('readme3')">✕</button>
       </div>
 
-      <div class="file-slot" id="slot_readme4" onclick="triggerSlot('readme4')">
-        <input type="file" id="input_readme4" accept=".md,.txt" onchange="loadFile('readme4',this)" onclick="event.stopPropagation()">
+      <div class="file-slot" id="slot_readme4">
         <div class="slot-icon">MD</div>
         <div class="slot-info">
           <div class="slot-name" id="name_readme4">Robust RAG README</div>
           <div class="slot-sub">Project README file</div>
         </div>
-        <span class="slot-status missing" id="status_readme4">Upload</span>
-        <button class="slot-clear" onclick="clearSlot(event,'readme4')">✕</button>
+        <button class="slot-upload-btn" onclick="document.getElementById('input_readme4').click()">Upload</button>
+        <button class="slot-clear" id="clear_readme4" style="display:none" onclick="clearSlot('readme4')">✕</button>
       </div>
 
       <div class="files-ready partial" id="filesReady">0 / 5 files loaded</div>
@@ -441,9 +441,6 @@ function setKeyStatus(ok) {
 }
 
 // ---- File Slots ----
-function triggerSlot(slot) {
-  document.getElementById('input_'+slot).click();
-}
 function loadFile(slot, input) {
   const f = input.files[0]; if (!f) return;
   const reader = new FileReader();
@@ -455,29 +452,28 @@ function loadFile(slot, input) {
     markSlotLoaded(slot, f.name);
     updateFilesStatus();
   };
+  reader.onerror = () => alert('Failed to read file. Please try again.');
   reader.readAsText(f);
 }
 function markSlotLoaded(slot, fname) {
-  const el = document.getElementById('slot_'+slot);
-  el.classList.add('loaded');
+  document.getElementById('slot_'+slot)?.classList.add('loaded');
   const nameEl = document.getElementById('name_'+slot);
-  if (nameEl) nameEl.textContent = fname;
-  const statusEl = document.getElementById('status_'+slot);
-  if (statusEl) { statusEl.textContent = '✓'; statusEl.className = 'slot-status ok'; }
+  if (nameEl) nameEl.textContent = '\u2713 ' + fname;
+  const clearBtn = document.getElementById('clear_'+slot);
+  if (clearBtn) clearBtn.style.display = 'flex';
 }
-function clearSlot(e, slot) {
-  e.stopPropagation();
+function clearSlot(slot) {
   FILES[slot] = null; FILE_NAMES[slot] = null;
   localStorage.removeItem('mehul_file_'+slot);
   localStorage.removeItem('mehul_fname_'+slot);
-  const el = document.getElementById('slot_'+slot);
-  el.classList.remove('loaded');
-  const statusEl = document.getElementById('status_'+slot);
-  if (statusEl) { statusEl.textContent = 'Upload'; statusEl.className = 'slot-status missing'; statusEl.style.display = ''; }
-  // Reset name for readmes
-  const defaults = { readme1:'Multi-Agent RAG README', readme2:'RetailRL README', readme3:'FinSignal README', readme4:'Robust RAG README' };
+  document.getElementById('slot_'+slot)?.classList.remove('loaded');
+  const clearBtn = document.getElementById('clear_'+slot);
+  if (clearBtn) clearBtn.style.display = 'none';
+  const defaults = { resume:'Resume (.tex)', readme1:'Multi-Agent RAG README', readme2:'RetailRL README', readme3:'FinSignal README', readme4:'Robust RAG README' };
   const nameEl = document.getElementById('name_'+slot);
-  if (nameEl && defaults[slot]) nameEl.textContent = defaults[slot];
+  if (nameEl) nameEl.textContent = defaults[slot] || slot;
+  const inp = document.getElementById('input_'+slot);
+  if (inp) inp.value = '';
   updateFilesStatus();
 }
 function updateFilesStatus() {
